@@ -1,5 +1,5 @@
 "use cliet";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const ExpEstimateCalculator: React.FC = () => {
   const [myLevel, setMyLevel] = useState<string>("");
@@ -11,6 +11,29 @@ const ExpEstimateCalculator: React.FC = () => {
     myExp?: number;
     partyExpShare?: number;
   }>({});
+
+  // 컴포넌트가 마운트될 때 로컬 스토리지에서 값 불러오기
+  useEffect(() => {
+    const savedMyLevel = localStorage.getItem("EstimateMyLevel");
+    const savedPartyLevel = localStorage.getItem("EstimatePartyLevel");
+    const savedSelectedMinutes = localStorage.getItem(
+      "EstimateSelectedMinutes"
+    );
+    const savedExpAmount = localStorage.getItem("EstimateExpAmount");
+
+    if (savedMyLevel) setMyLevel(savedMyLevel);
+    if (savedPartyLevel) setPartyLevel(savedPartyLevel);
+    if (savedSelectedMinutes) setSelectedMinutes(savedSelectedMinutes);
+    if (savedExpAmount) setExpAmount(savedExpAmount);
+  }, []);
+
+  // myLevel이나 partyLevel이 변경될 때마다 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem("EstimateMyLevel", myLevel);
+    localStorage.setItem("EstimatePartyLevel", partyLevel);
+    localStorage.setItem("EstimateSelectedMinutes", selectedMinutes);
+    localStorage.setItem("EstimateExpAmount", expAmount);
+  }, [myLevel, partyLevel, selectedMinutes, expAmount]);
 
   const calculateExpEstimate = (
     myLevel: number,
