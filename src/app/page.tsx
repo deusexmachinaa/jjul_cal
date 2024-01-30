@@ -6,8 +6,9 @@ export default function Home() {
   const [partyLevel, setPartyLevel] = useState<string>(""); // 문자열 타입으로 변경
   const [baseExp, setBaseExp] = useState<string>(""); // 문자열 타입으로 변경
   const [result, setResult] = useState<{
-    totalExp?: number;
-    partyExpShare?: number;
+    myExp?: string;
+    totalExp?: string;
+    partyExpShare?: string;
   }>({});
 
   // 컴포넌트가 마운트될 때 로컬 스토리지에서 값 불러오기
@@ -29,7 +30,7 @@ export default function Home() {
     myLevel: number,
     partyLevel: number,
     myExp: number
-  ): { totalExp: number; partyExpShare: number } {
+  ): { totalExp: number; myExp: number; partyExpShare: number } {
     const totalLevel = myLevel + partyLevel;
     const myLevelRatio = myLevel / totalLevel;
     const partyLevelRatio = partyLevel / totalLevel;
@@ -40,7 +41,7 @@ export default function Home() {
     // 쩔받는 사람의 경험치 계산
     const partyExpShare = totalExp * 0.8 * partyLevelRatio;
 
-    return { totalExp, partyExpShare };
+    return { totalExp, myExp, partyExpShare };
   }
 
   const handleCalculate = () => {
@@ -49,14 +50,27 @@ export default function Home() {
     const baseExpNum = parseInt(baseExp); // String을 Number로 변환
 
     if (!isNaN(myLevelNum) && !isNaN(partyLevelNum) && !isNaN(baseExpNum)) {
-      const { totalExp, partyExpShare } = calculateExpShare(
+      const { totalExp, myExp, partyExpShare } = calculateExpShare(
         myLevelNum,
         partyLevelNum,
         baseExpNum
       );
-      setResult({ totalExp, partyExpShare });
+      setResult({
+        totalExp: totalExp.toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }),
+        myExp: myExp.toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }),
+        partyExpShare: partyExpShare.toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }),
+      });
     } else {
-      setResult({}); // 빈 객체로 초기화
+      setResult({});
     }
   };
 
@@ -66,7 +80,9 @@ export default function Home() {
   ) => {
     const value = e.target.value;
     if (!isNaN(Number(value)) && Number(value) >= 0) {
-      setState(value);
+      if (/^\d*$/.test(value)) {
+        setState(value);
+      }
     } else {
       setState(""); // 숫자가 아니거나 음수일 경우 빈 문자열로 설정
     }
@@ -75,7 +91,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
       <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-xl font-bold mb-4">쩔 경험치 계산기</h1>
+        <h1 className="text-xl font-bold mb-4 text-center">쩔 경험치 계산기</h1>
         <div className="mb-2">
           <label
             className="block text-gray-700 text-sm font-bold mb-1"
@@ -85,7 +101,8 @@ export default function Home() {
           </label>
           <input
             className="border border-gray-300 p-2 rounded-lg w-full"
-            type="number"
+            type="text"
+            inputMode="numeric"
             id="myLevel"
             value={myLevel}
             onChange={(e) => handleLevelChange(e, setMyLevel)}
@@ -100,7 +117,8 @@ export default function Home() {
           </label>
           <input
             className="border border-gray-300 p-2 rounded-lg w-full"
-            type="number"
+            type="text"
+            inputMode="numeric"
             id="partyLevel"
             value={partyLevel}
             onChange={(e) => handleLevelChange(e, setPartyLevel)}
@@ -115,25 +133,27 @@ export default function Home() {
           </label>
           <input
             className="border border-gray-300 p-2 rounded-lg w-full"
-            type="number"
+            type="text"
+            inputMode="numeric"
             id="baseExp"
             value={baseExp}
             onChange={(e) => handleLevelChange(e, setBaseExp)}
           />
         </div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={handleCalculate}
-        >
-          계산하기
-        </button>
+        <div className="flex justify-center">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleCalculate}
+          >
+            계산하기
+          </button>
+        </div>
         <div className="mt-4">
-          <h2 className="text-lg font-semibold">계산 결과</h2>
-          {result.totalExp != null && (
-            <p>총 경험치: {result.totalExp.toFixed(2)}</p>
-          )}
+          <h2 className="text-lg font-semibold text-center">계산 결과</h2>
+          {result.myExp != null && <p>내가 얻은 경험치: {result.myExp}</p>}
+          {result.totalExp != null && <p>총 경험치: {result.totalExp}</p>}
           {result.partyExpShare != null && (
-            <p>파티원이 얻은 경험치: {result.partyExpShare.toFixed(2)}</p>
+            <p>파티원이 얻은 경험치: {result.partyExpShare}</p>
           )}
         </div>
       </div>
