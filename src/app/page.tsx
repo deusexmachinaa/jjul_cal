@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from "react";
 
 export default function Home() {
-  const [myLevel, setMyLevel] = useState<string>(""); // 문자열 타입으로 변경
-  const [partyLevel, setPartyLevel] = useState<string>(""); // 문자열 타입으로 변경
-  const [baseExp, setBaseExp] = useState<string>(""); // 문자열 타입으로 변경
+  const [myLevel, setMyLevel] = useState<string>(""); // 내 레벫
+  const [partyLevel, setPartyLevel] = useState<string>(""); // 파티원 레벨
+  const [baseExp, setBaseExp] = useState<string>(""); // 내가 적은 경험치
   const [result, setResult] = useState<{
     myExp?: string;
     totalExp?: string;
@@ -91,6 +91,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
       <div className="bg-white p-6 rounded-lg shadow-lg text-black">
+        {/* 쩔 경험치 계산기 카드 */}
         <h1 className="text-xl font-bold mb-4 text-center">쩔 경험치 계산기</h1>
         <div className="mb-2">
           <label
