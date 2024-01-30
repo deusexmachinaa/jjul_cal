@@ -150,8 +150,8 @@ export default function Home() {
         </div>
         <div className="mt-4 text-black">
           <h2 className="text-lg font-semibold text-center ">계산 결과</h2>
-          {result.myExp != null && <p>내가 얻은 경험치: {result.myExp}</p>}
           {result.totalExp != null && <p>총 경험치: {result.totalExp}</p>}
+          {result.myExp != null && <p>내가 얻은 경험치: {result.myExp}</p>}
           {result.partyExpShare != null && (
             <p>파티원이 얻은 경험치: {result.partyExpShare}</p>
           )}
