@@ -90,7 +90,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg">
+      <div className="bg-white p-6 rounded-lg shadow-lg text-black">
         <h1 className="text-xl font-bold mb-4 text-center">쩔 경험치 계산기</h1>
         <div className="mb-2">
           <label
@@ -148,8 +148,8 @@ export default function Home() {
             계산하기
           </button>
         </div>
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold text-center">계산 결과</h2>
+        <div className="mt-4 text-black">
+          <h2 className="text-lg font-semibold text-center ">계산 결과</h2>
           {result.myExp != null && <p>내가 얻은 경험치: {result.myExp}</p>}
           {result.totalExp != null && <p>총 경험치: {result.totalExp}</p>}
           {result.partyExpShare != null && (
