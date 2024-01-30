@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import ExpEstimateCalculator from "./ExpEstimateCalculator";
 
 export default function Home() {
   const [myLevel, setMyLevel] = useState<string>(""); // 내 레벫
@@ -89,10 +90,14 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
+      {/* 견적 계산기 카드 */}
+      <ExpEstimateCalculator />
       <div className="bg-white p-6 rounded-lg shadow-lg text-black">
         {/* 쩔 경험치 계산기 카드 */}
-        <h1 className="text-xl font-bold mb-4 text-center">쩔 경험치 계산기</h1>
+        <h1 className="text-xl font-bold mx-4 my-4 text-center">
+          쩔 경험치 계산기
+        </h1>
         <div className="mb-2">
           <label
             className="block text-gray-700 text-sm font-bold mb-1"
