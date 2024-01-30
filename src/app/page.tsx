@@ -1,14 +1,29 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Home() {
-  const [myLevel, setMyLevel] = useState<number>(0); // 숫자 타입으로 변경
-  const [partyLevel, setPartyLevel] = useState<number>(0); // 숫자 타입으로 변경
-  const [baseExp, setBaseExp] = useState<number>(0); // 숫자 타입으로 변경
+  const [myLevel, setMyLevel] = useState<string>(""); // 문자열 타입으로 변경
+  const [partyLevel, setPartyLevel] = useState<string>(""); // 문자열 타입으로 변경
+  const [baseExp, setBaseExp] = useState<string>(""); // 문자열 타입으로 변경
   const [result, setResult] = useState<{
     totalExp?: number;
     partyExpShare?: number;
   }>({});
+
+  // 컴포넌트가 마운트될 때 로컬 스토리지에서 값 불러오기
+  useEffect(() => {
+    const savedMyLevel = localStorage.getItem("myLevel");
+    const savedPartyLevel = localStorage.getItem("partyLevel");
+
+    if (savedMyLevel) setMyLevel(savedMyLevel);
+    if (savedPartyLevel) setPartyLevel(savedPartyLevel);
+  }, []);
+
+  // myLevel이나 partyLevel이 변경될 때마다 로컬 스토리지에 저장
+  useEffect(() => {
+    localStorage.setItem("myLevel", myLevel);
+    localStorage.setItem("partyLevel", partyLevel);
+  }, [myLevel, partyLevel]);
 
   function calculateExpShare(
     myLevel: number,
@@ -29,9 +44,9 @@ export default function Home() {
   }
 
   const handleCalculate = () => {
-    const myLevelNum = Number(myLevel); // String을 Number로 변환
-    const partyLevelNum = Number(partyLevel); // String을 Number로 변환
-    const baseExpNum = Number(baseExp); // String을 Number로 변환
+    const myLevelNum = parseInt(myLevel); // String을 Number로 변환
+    const partyLevelNum = parseInt(partyLevel); // String을 Number로 변환
+    const baseExpNum = parseInt(baseExp); // String을 Number로 변환
 
     if (!isNaN(myLevelNum) && !isNaN(partyLevelNum) && !isNaN(baseExpNum)) {
       const { totalExp, partyExpShare } = calculateExpShare(
@@ -47,13 +62,13 @@ export default function Home() {
 
   const handleLevelChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    setState: React.Dispatch<React.SetStateAction<number>>
+    setState: React.Dispatch<React.SetStateAction<string>>
   ) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value >= 0) {
+    const value = e.target.value;
+    if (!isNaN(Number(value)) && Number(value) >= 0) {
       setState(value);
     } else {
-      setState(0); // 숫자가 아니거나 음수일 경우 0
+      setState(""); // 숫자가 아니거나 음수일 경우 빈 문자열로 설정
     }
   };
 
