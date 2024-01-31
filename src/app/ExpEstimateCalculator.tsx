@@ -168,7 +168,7 @@ const ExpEstimateCalculator: React.FC = () => {
           className="block text-gray-700 text-sm font-bold mb-1"
           htmlFor="expAmount"
         >
-          {selectedMinutes} 분당 경험치량
+          내 {selectedMinutes} 분당 경험치량
         </label>
         <input
           className="border border-gray-300 p-2 rounded-lg w-full"
