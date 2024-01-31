@@ -9,7 +9,7 @@
 //   const [expDifference, setExpDifference] = useState<number | null>(null);
 
 //   useEffect(() => {
-//     let interval: NodeJS.Timeout;
+//     let interval: NodeJS.Timeout | null = null;
 //     if (isTimerRunning) {
 //       interval = setInterval(() => {
 //         setTimer((prev) => prev + 1);
