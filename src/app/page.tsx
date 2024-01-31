@@ -6,26 +6,38 @@ export default function Home() {
   const [myLevel, setMyLevel] = useState<string>(""); // 내 레벫
   const [partyLevel, setPartyLevel] = useState<string>(""); // 파티원 레벨
   const [baseExp, setBaseExp] = useState<string>(""); // 내가 적은 경험치
+  const [startExp, setStartExp] = useState<string>("");
+  const [endExp, setEndExp] = useState<string>("");
   const [result, setResult] = useState<{
     myExp?: string;
     totalExp?: string;
     partyExpShare?: string;
   }>({});
 
+  // 필드 표시 상태
+  const savedShowExpFields = localStorage.getItem("showExpFields");
+  const initialShowExpFields =
+    savedShowExpFields !== null ? savedShowExpFields === "true" : false;
+  const [showExpFields, setShowExpFields] =
+    useState<boolean>(initialShowExpFields);
+
   // 컴포넌트가 마운트될 때 로컬 스토리지에서 값 불러오기
   useEffect(() => {
     const savedMyLevel = localStorage.getItem("myLevel");
     const savedPartyLevel = localStorage.getItem("partyLevel");
+    const savedShowExpFields = localStorage.getItem("showExpFields");
 
     if (savedMyLevel) setMyLevel(savedMyLevel);
     if (savedPartyLevel) setPartyLevel(savedPartyLevel);
+    if (savedShowExpFields) setShowExpFields(savedShowExpFields === "true");
   }, []);
 
   // myLevel이나 partyLevel이 변경될 때마다 로컬 스토리지에 저장
   useEffect(() => {
     localStorage.setItem("myLevel", myLevel);
     localStorage.setItem("partyLevel", partyLevel);
-  }, [myLevel, partyLevel]);
+    localStorage.setItem("showExpFields", showExpFields.toString());
+  }, [myLevel, partyLevel, showExpFields]);
 
   function calculateExpShare(
     myLevel: number,
@@ -44,6 +56,11 @@ export default function Home() {
 
     return { totalExp, myExp, partyExpShare };
   }
+
+  // 필드 표시 상태 토글 함수
+  const toggleExpFields = () => {
+    setShowExpFields(!showExpFields);
+  };
 
   const handleCalculate = () => {
     const myLevelNum = parseInt(myLevel); // String을 Number로 변환
@@ -72,6 +89,19 @@ export default function Home() {
       });
     } else {
       setResult({});
+    }
+  };
+  // 시작 및 종료 경험치를 계산하여 baseExp 설정
+  const calculateAndSetBaseExp = () => {
+    const startExpNum = parseInt(startExp);
+    const endExpNum = parseInt(endExp);
+    if (!isNaN(startExpNum) && !isNaN(endExpNum)) {
+      const expDifference = endExpNum - startExpNum;
+      if (expDifference < 0) {
+        alert("종료 경험치가 시작 경험치보다 작습니다.");
+        return;
+      }
+      setBaseExp(expDifference.toString());
     }
   };
 
@@ -146,6 +176,60 @@ export default function Home() {
             onChange={(e) => handleLevelChange(e, setBaseExp)}
           />
         </div>
+        {/* 토글 버튼 */}
+        <div className="mb-4 flex justify-center">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={toggleExpFields}
+          >
+            {showExpFields ? "숨기기" : "경험치 차이 계산"}
+          </button>
+        </div>
+        {/* 시작 경험치 입력 필드 */}
+        {showExpFields && (
+          <>
+            <div className="mb-2">
+              <label
+                htmlFor="startExp"
+                className="block text-gray-700 text-sm font-bold mb-1"
+              >
+                시작 경험치
+              </label>
+              <input
+                type="text"
+                className="border border-gray-300 p-2 rounded-lg w-full"
+                value={startExp}
+                onChange={(e) => setStartExp(e.target.value)}
+              />
+            </div>
+
+            {/* 종료 경험치 입력 필드 */}
+            <div className="mb-2">
+              <label
+                htmlFor="endExp"
+                className="block text-gray-700 text-sm font-bold mb-1"
+              >
+                종료 경험치
+              </label>
+              <input
+                type="text"
+                className="border border-gray-300 p-2 rounded-lg w-full"
+                value={endExp}
+                onChange={(e) => setEndExp(e.target.value)}
+              />
+            </div>
+
+            {/* 계산 버튼 */}
+            <div className="my-4 flex justify-center">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={calculateAndSetBaseExp}
+              >
+                경험치 차이 계산
+              </button>
+            </div>
+          </>
+        )}
         <div className="flex justify-center">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
