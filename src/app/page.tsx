@@ -87,6 +87,7 @@ export default function Home() {
       setResult({});
     }
   };
+
   // 시작 및 종료 경험치를 계산하여 baseExp 설정
   const calculateAndSetBaseExp = () => {
     const startExpNum = parseInt(startExp);
@@ -156,6 +157,62 @@ export default function Home() {
             onChange={(e) => handleLevelChange(e, setPartyLevel)}
           />
         </div>
+        {/* 토글 버튼 */}
+        <div className="mb-2 flex justify-center">
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={toggleExpFields}
+          >
+            {showExpFields ? "숨기기" : "경험치 차이 계산"}
+          </button>
+        </div>
+        {/* 시작 경험치 입력 필드 */}
+        {showExpFields && (
+          <>
+            <div className="mb-2">
+              <label
+                htmlFor="startExp"
+                className="block text-gray-700 text-sm font-bold mb-1"
+              >
+                내 시작 경험치
+              </label>
+              <input
+                type="text"
+                className="border border-gray-300 p-2 rounded-lg w-full"
+                value={startExp}
+                onChange={(e) => setStartExp(e.target.value)}
+              />
+            </div>
+
+            {/* 종료 경험치 입력 필드 */}
+            <div className="mb-2">
+              <label
+                htmlFor="endExp"
+                className="block text-gray-700 text-sm font-bold mb-1"
+              >
+                내 종료 경험치
+              </label>
+              <input
+                type="text"
+                className="border border-gray-300 p-2 rounded-lg w-full"
+                value={endExp}
+                onChange={(e) => setEndExp(e.target.value)}
+              />
+            </div>
+
+            {/* 계산 버튼 */}
+            <div className="my-4 flex justify-center">
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => {
+                  calculateAndSetBaseExp();
+                }}
+              >
+                경험치 차이 계산
+              </button>
+            </div>
+          </>
+        )}
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-1"
@@ -172,60 +229,6 @@ export default function Home() {
             onChange={(e) => handleLevelChange(e, setBaseExp)}
           />
         </div>
-        {/* 토글 버튼 */}
-        <div className="mb-4 flex justify-center">
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={toggleExpFields}
-          >
-            {showExpFields ? "숨기기" : "경험치 차이 계산"}
-          </button>
-        </div>
-        {/* 시작 경험치 입력 필드 */}
-        {showExpFields && (
-          <>
-            <div className="mb-2">
-              <label
-                htmlFor="startExp"
-                className="block text-gray-700 text-sm font-bold mb-1"
-              >
-                시작 경험치
-              </label>
-              <input
-                type="text"
-                className="border border-gray-300 p-2 rounded-lg w-full"
-                value={startExp}
-                onChange={(e) => setStartExp(e.target.value)}
-              />
-            </div>
-
-            {/* 종료 경험치 입력 필드 */}
-            <div className="mb-2">
-              <label
-                htmlFor="endExp"
-                className="block text-gray-700 text-sm font-bold mb-1"
-              >
-                종료 경험치
-              </label>
-              <input
-                type="text"
-                className="border border-gray-300 p-2 rounded-lg w-full"
-                value={endExp}
-                onChange={(e) => setEndExp(e.target.value)}
-              />
-            </div>
-
-            {/* 계산 버튼 */}
-            <div className="my-4 flex justify-center">
-              <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={calculateAndSetBaseExp}
-              >
-                경험치 차이 계산
-              </button>
-            </div>
-          </>
-        )}
         <div className="flex justify-center">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
