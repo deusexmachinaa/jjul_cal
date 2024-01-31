@@ -98,7 +98,9 @@ const ExpEstimateCalculator: React.FC = () => {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg text-black mx-4 my-4">
-      <h2 className="text-xl font-bold mb-4 text-center">경험치 견적 계산기</h2>
+      <h2 className="text-xl font-bold mb-4 text-center">
+        시간당 경험치 견적 계산기
+      </h2>
 
       {/* 사용자의 레벨 입력 필드 */}
       <div className="mb-2">
@@ -156,6 +158,7 @@ const ExpEstimateCalculator: React.FC = () => {
           <option value="15">15분</option>
           <option value="20">20분</option>
           <option value="30">30분</option>
+          <option value="60">60분</option>
         </select>
       </div>
 
