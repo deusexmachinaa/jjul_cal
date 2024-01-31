@@ -15,29 +15,23 @@ export default function Home() {
   }>({});
 
   // 필드 표시 상태
-  const savedShowExpFields = localStorage.getItem("showExpFields");
-  const initialShowExpFields =
-    savedShowExpFields !== null ? savedShowExpFields === "true" : false;
-  const [showExpFields, setShowExpFields] =
-    useState<boolean>(initialShowExpFields);
+  const [showExpFields, setShowExpFields] = useState<boolean>(false);
 
   // 컴포넌트가 마운트될 때 로컬 스토리지에서 값 불러오기
   useEffect(() => {
     const savedMyLevel = localStorage.getItem("myLevel");
     const savedPartyLevel = localStorage.getItem("partyLevel");
     const savedShowExpFields = localStorage.getItem("showExpFields");
-
+    setShowExpFields(savedShowExpFields === "true");
     if (savedMyLevel) setMyLevel(savedMyLevel);
     if (savedPartyLevel) setPartyLevel(savedPartyLevel);
-    if (savedShowExpFields) setShowExpFields(savedShowExpFields === "true");
   }, []);
 
   // myLevel이나 partyLevel이 변경될 때마다 로컬 스토리지에 저장
   useEffect(() => {
     localStorage.setItem("myLevel", myLevel);
     localStorage.setItem("partyLevel", partyLevel);
-    localStorage.setItem("showExpFields", showExpFields.toString());
-  }, [myLevel, partyLevel, showExpFields]);
+  }, [myLevel, partyLevel]);
 
   function calculateExpShare(
     myLevel: number,
@@ -59,7 +53,9 @@ export default function Home() {
 
   // 필드 표시 상태 토글 함수
   const toggleExpFields = () => {
-    setShowExpFields(!showExpFields);
+    const newShowExpFields = !showExpFields;
+    setShowExpFields(newShowExpFields);
+    localStorage.setItem("showExpFields", newShowExpFields.toString());
   };
 
   const handleCalculate = () => {
