@@ -96,6 +96,14 @@ const ExpEstimateCalculator: React.FC = () => {
     }
   };
 
+  //타이머 오픈
+  const handleOpenTimer = () => {
+    window.open(
+      "https://ssl.pstatic.net/sstatic/keypage/outside/timer/timer_160627_2.html",
+      "_blank"
+    );
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg text-black mx-4 my-4">
       <h2 className="text-xl font-bold mb-4 text-center">
@@ -144,7 +152,7 @@ const ExpEstimateCalculator: React.FC = () => {
           className="block text-gray-700 text-sm font-bold mb-1"
           htmlFor="selectedMinutes"
         >
-          혼자 사냥시 선택한 분 단위
+          혼자 사냥한 분 단위 선택
         </label>
         <select
           className="border border-gray-300 p-2 rounded-lg w-full"
@@ -178,6 +186,16 @@ const ExpEstimateCalculator: React.FC = () => {
           value={expAmount}
           onChange={(e) => handleLevelChange(e, setExpAmount)}
         />
+      </div>
+
+      {/* 타이머 열기 버튼 */}
+      <div className="flex justify-center my-2">
+        <button
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          onClick={handleOpenTimer}
+        >
+          타이머 열기
+        </button>
       </div>
 
       {/* 계산하기 버튼 */}
